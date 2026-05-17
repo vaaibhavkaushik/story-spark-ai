@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useGetPostListsQuery } from "../../../redux/apis/post.api";
 import { useDebounced } from "../../../hooks/global";
-import { Post, Topic } from "../../../models/post";
+import { Topic } from "../../../models/post";
 import PaginationComponent from "../../pagination/pagination.component";
 
 const PostListsComponent: React.FC = () => {
@@ -22,55 +22,7 @@ const PostListsComponent: React.FC = () => {
     query["searchTerm"] = debounceTerm;
   }
 
-  // const { data, isLoading } = useGetPostListsQuery({ ...query });
-  const isLoading = false;
-  const data = {
-    meta: { total: 2 },
-    posts: [
-      {
-        _id: "1",
-        title: "Understanding React Hooks Deep Dive",
-        tag: "React",
-        author: { name: "Lisa Wang", email: "lisa@example.com" },
-        topic: [{ _id: "t1", title: "Technology", color: "#3b82f6" }, { _id: "t3", title: "Web", color: "#10b981" }],
-        isPublished: true,
-        isFeaturedPost: true,
-        likesCount: 1205,
-        commentsCount: 342,
-        viewsCount: 15400,
-        createdAt: "2023-10-01T12:00:00Z",
-        imageURL: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=200&h=200&fit=crop"
-      },
-      {
-        _id: "2",
-        title: "Mastering Tailwind CSS for Dark Themes",
-        tag: "CSS",
-        author: { name: "Aditya Gautam", email: "aditya@example.com" },
-        topic: [{ _id: "t2", title: "Design", color: "#ec4899" }],
-        isPublished: false,
-        isFeaturedPost: false,
-        likesCount: 89,
-        commentsCount: 12,
-        viewsCount: 1205,
-        createdAt: "2023-10-02T12:00:00Z",
-        imageURL: "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=200&h=200&fit=crop"
-      },
-      {
-        _id: "3",
-        title: "Building Scalable AI Applications",
-        tag: "AI/ML",
-        author: { name: "John Smith", email: "john@example.com" },
-        topic: [{ _id: "t4", title: "AI", color: "#8b5cf6" }, { _id: "t1", title: "Technology", color: "#3b82f6" }],
-        isPublished: true,
-        isFeaturedPost: false,
-        likesCount: 890,
-        commentsCount: 156,
-        viewsCount: 9800,
-        createdAt: "2023-10-05T09:30:00Z",
-        imageURL: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=200&h=200&fit=crop"
-      }
-    ]
-  };
+  const { data, isLoading } = useGetPostListsQuery({ ...query });
 
   const onPaginationChange = (page: number, pageSize: number) => {
     setPage(page);
@@ -211,7 +163,7 @@ const PostListsComponent: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800/60 bg-transparent">
-              {data?.posts?.map((post: Post) => (
+              {data?.posts?.map((post) => (
                 <tr key={post._id} className="hover:bg-gray-800/30 transition-colors duration-200 group">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">

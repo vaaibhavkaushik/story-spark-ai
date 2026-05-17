@@ -89,7 +89,7 @@ const getPosts = (filters, pagination) => __awaiter(void 0, void 0, void 0, func
         sortCondition.likesCount = -1;
     }
     if (sortBy && orderBy) {
-        sortCondition[sortBy] = orderBy;
+        sortCondition[sortBy] = orderBy === "asc" ? 1 : -1;
     }
     const result = yield post_model_1.Post.find(whereCondition)
         .sort(sortCondition)
