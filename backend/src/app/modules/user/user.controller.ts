@@ -135,11 +135,10 @@ const getProfileInfo = catchAsync(async (req: Request, res: Response) => {
 
 const toggleFollow = catchAsync(async (req: Request, res: Response) => {
   const token = await getToken(req);
-
   const authorId = Array.isArray(req.params.authorId)
     ? req.params.authorId[0]
     : req.params.authorId;
-
+ const authorId = routeParam(req.params.authorId);
   const result = await UserService.toggleFollow(token, authorId);
 
   sendResponse(res, {
@@ -158,7 +157,7 @@ const getFollowStatus = catchAsync(async (req: Request, res: Response) => {
   const authorId = Array.isArray(req.params.authorId)
     ? req.params.authorId[0]
     : req.params.authorId;
-
+  const authorId = routeParam(req.params.authorId);
   const result = await UserService.getFollowStatus(token, authorId);
 
   sendResponse(res, {
