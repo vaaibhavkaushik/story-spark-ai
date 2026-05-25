@@ -136,7 +136,9 @@ const getProfileInfo = catchAsync(async (req: Request, res: Response) => {
 const toggleFollow = catchAsync(async (req: Request, res: Response) => {
   const token = await getToken(req);
 
-  const authorId = req.params.authorId as string;
+  const authorId = Array.isArray(req.params.authorId)
+    ? req.params.authorId[0]
+    : req.params.authorId;
 
   const result = await UserService.toggleFollow(token, authorId);
 
@@ -150,25 +152,22 @@ const toggleFollow = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getFollowStatus = catchAsync(
-  async (req: Request, res: Response) => {
-    const token = await getToken(req);
+const getFollowStatus = catchAsync(async (req: Request, res: Response) => {
+  const token = await getToken(req);
 
-    const authorId = req.params.authorId as string;
+  const authorId = Array.isArray(req.params.authorId)
+    ? req.params.authorId[0]
+    : req.params.authorId;
 
-    const result = await UserService.getFollowStatus(
-      token,
-      authorId
-    );
+  const result = await UserService.getFollowStatus(token, authorId);
 
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: "Follow status fetched successfully!",
-      data: result,
-    });
-  }
-);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Follow status fetched successfully!",
+    data: result,
+  });
+});
 
 export const UserController = {
   getAllUsers,
