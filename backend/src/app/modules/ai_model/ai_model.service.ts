@@ -2,17 +2,16 @@ import ApiError from "../../../errors/api_error";
 import { ITokenPayload } from "../../../interfaces/token";
 import { timeoutLimit } from "../../../utils/timeout_limit";
 import { User } from "../user/user.model";
-import { IAIModel, IAlternateEndingPayload } from "./ai_model.interface";
+import { IAIModel, IAlternateEndingPayload, IQuotaRefundGuard } from "./ai_model.interface";
 import { generateWithGeminiStories, generateAlternateEndingsWithGemini } from "./ai_model.utils";
 import httpStatus from "http-status";
 import { REQUEST_LIMITS } from "../../../interfaces/ai_model_request_limit";
-import { QuotaRefundGuard } from "../../middleware/check.request.limit";
 
 
 const aiModelGenerate = async (
   payload: IAIModel,
   token: ITokenPayload,
-  refundGuard?: QuotaRefundGuard
+  refundGuard?: IQuotaRefundGuard
 ) => {
   const { email } = token;
   const { prompt, wordLength, numStories } = payload;

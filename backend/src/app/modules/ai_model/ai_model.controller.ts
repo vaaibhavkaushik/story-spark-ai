@@ -20,24 +20,17 @@ const aiModelGenerate = catchAsync(async (req: Request, res: Response) => {
     );
   }
 
-  try {
-    const result = await AiModelService.aiModelGenerate(
-      prompt,
-      token,
-      res.locals.quotaRefundGuard
-    );
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: "Stories generated successfully!",
-      data: result,
-    });
-  } catch (error) {
-    if (res.locals.quotaRefundGuard) {
-      await res.locals.quotaRefundGuard.refund();
-    }
-    throw error;
-  }
+  const result = await AiModelService.aiModelGenerate(
+    prompt,
+    token,
+    res.locals.quotaRefundGuard
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Stories generated successfully!",
+    data: result,
+  });
 });
 
 const aiFreeModelGenerate = catchAsync(async (req: Request, res: Response) => {
@@ -82,14 +75,6 @@ const aiFreeModelGenerate = catchAsync(async (req: Request, res: Response) => {
 const aiModelAlternateEndings = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
   const token = await getToken(req);
-
-  // Safety validation: Ensure quotaRefundGuard exists on res.locals
-  if (!res.locals.quotaRefundGuard) {
-    throw new ApiError(
-      httpStatus.INTERNAL_SERVER_ERROR,
-      "Quota refund guard not initialized"
-    );
-  }
 
   const result = await AiModelService.aiModelAlternateEndings(payload, token);
   sendResponse(res, {

@@ -6,8 +6,10 @@ import ApiError from "../../errors/api_error";
 import { JwtHalers } from "../../utils/jwt.helper";
 import config from "../../config";
 import { Secret } from "jsonwebtoken";
+import { IQuotaRefundGuard } from "../modules/ai_model/ai_model.interface";
+import logger from "../../utils/logger.util";
 
-export class QuotaRefundGuard {
+export class QuotaRefundGuard implements IQuotaRefundGuard {
   private email: string;
   private refunded: boolean = false;
 
@@ -26,8 +28,10 @@ export class QuotaRefundGuard {
         { $inc: { requestsThisMonth: -1 } }
       );
     } catch (error) {
-      // Log error but do not block client response
-      console.error(`Failed to refund quota for user ${this.email}:`, error);
+      // Rollback internal state to allow retry on transient DB failure
+      this.refunded = false;
+      logger.error(`Failed to refund quota for user ${this.email}: ${error instanceof Error ? error.message : String(error)}`);
+      throw error;
     }
   }
 

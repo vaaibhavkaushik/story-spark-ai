@@ -23,3 +23,8 @@ export interface IAlternateEndingPayload {
   tag: string;
 }
 
+export interface IQuotaRefundGuard {
+  refund(): Promise<void>;
+  isRefunded(): boolean;
+}
+
