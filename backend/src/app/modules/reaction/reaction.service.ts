@@ -20,48 +20,36 @@ const toggleReaction = async (
   if (!post) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Post not found!");
   }
+
+  // Check if reaction already exists
   const existingReaction = await Reaction.findOne({
-    postId: new Types.ObjectId(postId),
+    postId: postId,
     userId: user._id,
     type: type,
   });
 
   if (existingReaction) {
-    await Reaction.deleteOne({ _id: existingReaction._id });
-
-    const updatedPost = await Post.findByIdAndUpdate(
-      postId,
-      {
-        $pull: { reactions: existingReaction._id },
-        $inc: { likesCount: type === "like" ? -1 : 0 },
-      },
-      { new: true }
+    // Remove reaction
+    await Reaction.findByIdAndDelete(existingReaction._id);
+    post.likesCount = Math.max(0, post.likesCount - 1);
+    post.reactions = post.reactions || [];
+    post.reactions = post.reactions.filter(
+      (rId) => rId.toString() !== existingReaction._id.toString()
     );
-
-    return {
-      message: "Reaction removed successfully",
-      likesCount: updatedPost?.likesCount || 0,
-    };
+    await post.save();
+    return { message: "Reaction removed", likesCount: post.likesCount };
   } else {
+    // Add reaction
     const newReaction = await Reaction.create({
       postId: new Types.ObjectId(postId),
       userId: user._id,
       type: type,
     });
-
-    const updatedPost = await Post.findByIdAndUpdate(
-      postId,
-      {
-        $push: { reactions: newReaction._id },
-        $inc: { likesCount: type === "like" ? 1 : 0 },
-      },
-      { new: true }
-    );
-
-    return {
-      message: "Reaction added successfully",
-      likesCount: updatedPost?.likesCount || 0,
-    };
+    post.likesCount = post.likesCount + 1;
+    post.reactions = post.reactions || [];
+    post.reactions.push(newReaction._id);
+    await post.save();
+    return { message: "Reaction added", likesCount: post.likesCount };
   }
 };
 
