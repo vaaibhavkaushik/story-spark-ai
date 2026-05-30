@@ -18,11 +18,34 @@ const createResetToken = (
     algorithm: "HS256",
     expiresIn: expireTime,
   } as SignOptions;
+
   return jwt.sign(payload, secret, options);
 };
 
-const verifyToken = (token: string, secret: Secret): JwtPayload => {
-  return jwt.verify(token, secret) as JwtPayload;
+const verifyToken = (
+  token: string,
+  secret: Secret
+): JwtPayload => {
+  if (!token) {
+    throw new Error("Token missing");
+  }
+
+  // Support both:
+  // Authorization: Bearer <token>
+  // Authorization: <token>
+
+  const extractedToken = token.startsWith("Bearer ")
+    ? token.split(" ")[1]
+    : token;
+
+  if (!extractedToken) {
+    throw new Error("Invalid token format");
+  }
+
+  return jwt.verify(
+    extractedToken,
+    secret
+  ) as JwtPayload;
 };
 
 export const JwtHalers = {
