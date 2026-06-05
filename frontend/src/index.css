@@ -179,8 +179,14 @@ p {
 /* ================= REDUCED MOTION ================= */
 
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
+  html {
+    scroll-behavior: auto;
+  }
+
+  .motion-card,
+  .contact-submit-btn,
+  .scroll-to-top-btn {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
