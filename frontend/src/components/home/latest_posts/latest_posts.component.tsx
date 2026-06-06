@@ -57,7 +57,7 @@ const LatestPostsComponent = () => {
   return (
     <section className="w-full min-w-0 max-w-full text-slate-900 dark:text-slate-100">
       <h2 className="mb-6 text-2xl font-bold">Latest Posts</h2>
-      <div className="max-w-full space-y-3">
+      <div className="max-w-full space-y-3 md:max-h-[75vh] md:overflow-y-auto">
         {visiblePosts.length > 0 ? (
           visiblePosts.map((post: Post) => {
             const isExpanded = expandedPostId === post._id;
