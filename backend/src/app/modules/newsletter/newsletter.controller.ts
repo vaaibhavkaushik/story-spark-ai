@@ -70,5 +70,12 @@ export const unsubscribeByToken = async (req: Request, res: Response) => {
       message: "Failed to unsubscribe",
       error,
     });
+    const { token } = req.params;
+    const safeToken = Array.isArray(token) ? (token[0] as string) : (token as string);
+
+    const result = await newsletterService.unsubscribeByToken(safeToken);
+    res.status(200).json(result);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
   }
 };

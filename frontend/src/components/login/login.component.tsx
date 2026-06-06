@@ -4,6 +4,13 @@ import { Link } from "react-router-dom";
 import SSInput from "../ui-component/ss-input/ss-input";
 import SSButton from "../ui-component/ss-button/ss-button";
 import { motion } from "framer-motion";
+import { motion } from "framer-motion";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { WandSparkles, BookOpen, UsersRound } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
+
+import SSInput from "../ui-component/ss-input/ss-input";
+import SSButton from "../ui-component/ss-button/ss-button";
 import {
   useLoginUserMutation,
   useGoogleLoginMutation,
@@ -11,10 +18,7 @@ import {
 import { storeUserInfo, getUserInfo } from "../../services/auth.service";
 import { USER_ROLE } from "../../constants/role";
 import RedirectComponent from "../redirect.component";
-import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
-import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import { WandSparkles, BookOpen, UsersRound } from "lucide-react";
+
 
 type Inputs = {
   email: string;
@@ -78,13 +82,9 @@ const LoginComponent = () => {
   };
 
   if (isLoggedIn) {
-    const userInfo = getUserInfo();
-    const isDashboardUser =
-      userInfo?.role === USER_ROLE.ADMIN ||
-      userInfo?.role === USER_ROLE.SUPER_ADMIN;
     return (
       <RedirectComponent
-        defaultPath={isDashboardUser ? "/dashboard" : "/explore"}
+        defaultPath="/dashboard"
       />
     );
   }
@@ -139,6 +139,7 @@ const LoginComponent = () => {
             exploring the future of fiction.
           </div>
         </div>
+
 
         {/* Right side — login form card */}
         <div className="w-full max-w-md bg-slate-50 dark:bg-slate-800/60 backdrop-blur-xl border border-slate-200 dark:border-slate-700/50 rounded-2xl p-8 sm:p-10 shadow-2xl">
@@ -236,6 +237,8 @@ const LoginComponent = () => {
           </p>
         </div>
       </div>
+
+      </motion.div>
 
       <Toaster position="top-right" reverseOrder={false} />
     </div>

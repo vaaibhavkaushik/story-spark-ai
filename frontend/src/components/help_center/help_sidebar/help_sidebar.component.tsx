@@ -149,6 +149,48 @@ const HelpSidebar = () => {
               })}
             </div>
 
+                      {isActive && (
+                        <motion.div
+                          layoutId="sidebar-active-pill"
+                          className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/10 to-indigo-500/10 dark:from-blue-500/20 dark:to-indigo-500/20"
+                          transition={{
+                            type: "spring",
+                            stiffness: 260,
+                            damping: 24,
+                          }}
+                        />
+                      )}
+
+                      <div
+                        className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300 shrink-0 ${
+                          isActive
+                            ? `bg-gradient-to-br ${section.color} text-white shadow-md`
+                            : "bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 group-hover:text-blue-500"
+                        }`}
+                      >
+                        <i className={`fa-solid ${section.icon}`} aria-hidden="true" />
+                      </div>
+
+                      <div className="relative z-10 flex-1 min-w-0">
+                        <p className={`font-semibold text-sm transition-colors duration-300 ${
+                          isActive ? "text-slate-900 dark:text-white" : "text-slate-700 dark:text-slate-300"
+                        }`}>
+                          {section.label}
+                        </p>
+                        {/* The 'Jump to section' text has been safely removed from here! */}
+                      </div>
+
+                      <div className="relative z-10 shrink-0">
+                        <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          isActive ? "bg-blue-500 scale-125 shadow-[0_0_8px_rgba(59,130,246,0.6)]" : "bg-slate-300 dark:bg-slate-700"
+                        }`} />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+            {/* Support CTA Card */}
             <motion.div
               whileHover={{ y: -2 }}
               className="relative overflow-hidden mt-6 rounded-2xl border border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] p-5 w-full box-border"
@@ -168,6 +210,18 @@ const HelpSidebar = () => {
                   className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold py-3 transition-all duration-150 active:scale-[0.98] shadow-sm hover:shadow-md uppercase tracking-wider cursor-pointer"
                 >
                   Support Links
+                  <div>
+                    <h3 className="font-bold text-slate-800 dark:text-white">Need More Help?</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Contact support</p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => scrollToSection("support-links-section")}
+                  className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 text-sm transition-all duration-300 shadow-md shadow-blue-500/10"
+                >
+                  Open Support Hub
                 </button>
               </div>
             </motion.div>
@@ -177,6 +231,20 @@ const HelpSidebar = () => {
 
       <nav className="lg:hidden sticky top-[61px] sm:top-[69px] z-20 -mx-4 px-4 py-3 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-200/60 dark:border-white/10 mb-6 w-screen box-border select-none overflow-hidden" aria-label="Help center mobile navigation">
         <div ref={mobileNavRef} className="flex gap-2 overflow-x-auto pb-0.5 scrollbar-none w-full items-center box-border touch-pan-x">
+      </div>
+    </nav>
+
+
+      {/* Mobile horizontal scroll nav */}
+      <nav
+        className="lg:hidden sticky top-0 z-20 -mx-4 px-4 py-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-b border-slate-200 dark:border-white/10 mb-8 overflow-hidden select-none"
+
+        aria-label="Help center mobile navigation"
+      >
+        <div 
+          ref={mobileNavRef} 
+          className="flex gap-2 overflow-x-auto pb-1 scrollbar-none w-full items-center box-border touch-pan-x"
+        >
           {HELP_SECTIONS.map((section) => {
             const isSelected = activeSection === section.id;
             return (

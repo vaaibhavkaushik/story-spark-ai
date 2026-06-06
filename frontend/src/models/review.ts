@@ -7,3 +7,5 @@ export interface Review {
   rating?: number;
 }
 
+  rating: number;
+}
