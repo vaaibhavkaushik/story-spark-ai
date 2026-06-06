@@ -38,6 +38,10 @@ const modules = [
     router: UserRouter,
   },
   {
+    path: "/users",
+    router: UserRouter,
+  },
+  {
     path: "/review",
     router: ReviewRouter,
   },
