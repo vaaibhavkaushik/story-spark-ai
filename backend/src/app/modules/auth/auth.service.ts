@@ -382,12 +382,12 @@ const resetPassword = async (payload: {
   }
   
   const getPasswordError = (pwd: string) => {
-    if (pwd.length < 8) return "Password must be at least 8 characters long";
-    if (!/[A-Z]/.test(pwd)) return "Password must contain at least one uppercase letter";
-    if (!/[a-z]/.test(pwd)) return "Password must contain at least one lowercase letter";
-    if (!/[0-9]/.test(pwd)) return "Password must contain at least one number";
-    if (!/[^A-Za-z0-9]/.test(pwd)) return "Password must contain at least one special character";
-    return "";
+    if (pwd.length < 8) return "Password must be of at least 8 characters long";
+  if (!/[A-Z]/.test(pwd)) return "Password must contain at least one uppercase letter(A-Z)";
+  if (!/[a-z]/.test(pwd)) return "Password must contain at least one lowercase letter(a-z)";
+  if (!/[0-9]/.test(pwd)) return "Password must contain at least one number(0-9)";
+  if (!/[^A-Za-z0-9]/.test(pwd)) return "Password must contain at least one special character(e.g. !@#$%^&*)";
+    return " ";
   };
   const passwordError = getPasswordError(password);
   if (passwordError) {
@@ -408,7 +408,7 @@ const resetPassword = async (payload: {
   if (!otpRecord) {
     throw new ApiError(
       httpStatus.UNAUTHORIZED,
-      "Invalid or expired verification token. Please verify your email again."
+      "Invalid or expired verification token. Please verify your email again..."
     );
   }
 
@@ -418,7 +418,7 @@ const resetPassword = async (payload: {
   ) {
     throw new ApiError(
       httpStatus.UNAUTHORIZED,
-      "Verification token has expired. Please verify your email again."
+      "Verification token has expired. Please verify your email again..."
     );
   }
 
