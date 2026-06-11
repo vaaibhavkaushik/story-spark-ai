@@ -1,4 +1,5 @@
-﻿import { useForm, SubmitHandler } from "react-hook-form";
+﻿import { WandSparkles, BookOpen, UsersRound } from "lucide-react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import SSInput from "../ui-component/ss-input/ss-input";
 import SSButton from "../ui-component/ss-button/ss-button";
 import { useState, useEffect } from "react";
@@ -281,7 +282,6 @@ const SignUpComponent = () => {
         </div>
 
         <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 sm:p-8 shadow-2xl w-full min-w-0 overflow-hidden">
-          <h3 className="text-center text-2xl font-bold tracking-tight text-slate-200">
         <div className="flex justify-center items-center gap-40">
         
                 <div className="flex flex-col gap-5">
@@ -289,7 +289,7 @@ const SignUpComponent = () => {
                     
                     Turns Ideas into
                     <br /> 
-                    unforgotable stories
+                    unforgettable stories
                     
                     </h1>
                   <p>AI powered storytelling that helps you
@@ -324,7 +324,7 @@ const SignUpComponent = () => {
                       </div>
                       <div>
                         <h1 className="font-bold">Built for everyone</h1>
-                        <p>Writers, Creaters and dreamers</p>
+                        <p>Writers, Creators and dreamers</p>
                       </div>
                      </div>
                      <div className="border border-gray-300 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 dark:text-gray-400">
@@ -549,6 +549,8 @@ const SignUpComponent = () => {
           )}
         </div>
       </div>
+      </div>
+    </div>
 
       <Toaster position="top-right" reverseOrder={false} />
     </div>
