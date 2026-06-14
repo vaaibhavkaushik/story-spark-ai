@@ -317,7 +317,7 @@ const FooterComponent: React.FC = () => {
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1">
+          <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 pr-20">
             {legalLinks.map(({ label, to }, i) => (
               <React.Fragment key={label}>
                 <Link
