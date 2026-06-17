@@ -1,5 +1,6 @@
 import express from "express";
 import { PostController } from "./post.controller";
+import { PostMetaController } from "./post.meta.controller";
 import auth from "../../middleware/auth.middleware";
 import checkRequestLimit from "../../middleware/check.request.limit";
 import validateRequest from "../../middleware/validate.request";
@@ -8,6 +9,7 @@ import { ENUM_USER_ROLE } from "../../../enums/user";
 
 const router = express.Router();
 
+// Create a new post
 router.post(
   "/create",
   auth(
@@ -20,13 +22,28 @@ router.post(
   PostController.createPost
 );
 
-router.get("/", PostController.getPosts);
+// All authenticated roles allowed to use AI variation features
+const AI_VARIATION_ROLES = [
+  ENUM_USER_ROLE.USER,
+  ENUM_USER_ROLE.WRITER,
+  ENUM_USER_ROLE.ADMIN,
+  ENUM_USER_ROLE.SUPER_ADMIN,
+] as const;
+
+// AI variation routes
+router.post("/remix", auth(...AI_VARIATION_ROLES), checkRequestLimit(), PostController.remixStory);
+router.post("/translate", auth(...AI_VARIATION_ROLES), checkRequestLimit(), PostController.translateStory);
+
+// Named GET routes must come before /:id to avoid the wildcard swallowing them
+router.get("/tag/:tag", PostController.getPostsByTag);
+
+// /latest-lists is a client-facing alias for /latest-posts (both serve the same handler)
 router.get("/latest-posts", PostController.getLatestPosts);
 router.get("/latest-lists", PostController.getLatestPosts);
+
+// /feature-lists is a client-facing alias for /featured-posts (both serve the same handler)
 router.get("/featured-posts", PostController.getFeaturedPosts);
 router.get("/feature-lists", PostController.getFeaturedPosts);
-router.get("/tag/:tag", PostController.getPostsByTag);
-router.get("/:id", PostController.getSinglePost);
 
 router.patch(
   "/featured/:postId",
@@ -68,28 +85,10 @@ router.delete(
   PostController.deletePost
 );
 
-router.post(
-  "/remix",
-  auth(
-    ENUM_USER_ROLE.USER,
-    ENUM_USER_ROLE.WRITER,
-    ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.SUPER_ADMIN
-  ),
-  checkRequestLimit(),
-  PostController.remixStory
-);
+// OG meta route for social media bots — must be before /:id
+router.get("/meta/:id", PostMetaController.serveOgShell);
 
-router.post(
-  "/translate",
-  auth(
-    ENUM_USER_ROLE.USER,
-    ENUM_USER_ROLE.WRITER,
-    ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.SUPER_ADMIN
-  ),
-  checkRequestLimit(),
-  PostController.translateStory
-);
+// /:id must be last among GET routes — it matches any segment
+router.get("/:id", PostController.getSinglePost);
 
 export const PostRouter = router;
