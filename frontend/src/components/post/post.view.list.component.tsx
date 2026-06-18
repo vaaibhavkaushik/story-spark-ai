@@ -133,7 +133,7 @@ const ExploreViewListComponent: React.FC<IExploreViewListComponentProps> = ({
               </div>
 
               <div className="px-6 py-5 flex-1 flex flex-col relative z-10">
-                <h3 className="font-extrabold text-xl mb-3 text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2 dark:text-white dark:group-hover:text-indigo-400">
+                <h3 className="font-extrabold text-xl mb-3 text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2 break-words overflow-hidden text-ellipsis dark:text-white dark:group-hover:text-indigo-400">
                   {story.title}
                 </h3>
 
