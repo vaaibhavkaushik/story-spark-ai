@@ -2,7 +2,6 @@ import Razorpay from 'razorpay';
 
 let razorpayInstance: InstanceType<typeof Razorpay> | null = null;
 
-export function getRazorpay(): InstanceType<typeof Razorpay> {
 export const getRazorpay = (): InstanceType<typeof Razorpay> => {
   if (!razorpayInstance) {
     razorpayInstance = new Razorpay({
@@ -10,7 +9,8 @@ export const getRazorpay = (): InstanceType<typeof Razorpay> => {
       key_secret: process.env.RAZORPAY_KEY_SECRET!,
     });
   }
+
   return razorpayInstance;
-}
+};
 
 export default getRazorpay;
