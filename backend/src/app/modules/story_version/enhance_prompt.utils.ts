@@ -12,6 +12,9 @@ export const enhancePromptWithGemini = async (
 
   const metaPrompt = `You are a creative writing assistant.
 
+
+Prompt: ${prompt.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, " ").replace(/\r/g, "")}`;
+
 Use the following story context if available:
 
 ${compressedContext ?? "No previous context"}
